@@ -1,0 +1,124 @@
+    <div class="panel panel-default">
+      <div class="panel-heading">
+  
+          <h3><strong><bold>
+      <center> <%= @topic.title %></center>
+  </bold></strong></h3>
+    
+    
+          
+              
+              </div>
+
+   <div class="panel-body" >
+        <div class="row">
+           <div class="colxsm-0 col-sm-1 col-md-1">
+        <% if user_signed_in?%>
+            <% if current_user.voted_up_on? @topic  %>
+                <%= link_to(like_link_path(@topic), class: "btn btn-info") do %>
+                <%=@topic.get_upvotes.size%> <i class="fa fa-thumbs-o-up fa-2x " ></i>  
+                <% end %>
+                <%else%>
+                <%= link_to(like_link_path(@topic), class: "btn btn-default") do %>
+                <%=@topic.get_upvotes.size%> <i class="fa fa-thumbs-o-up fa-2x " ></i>  
+                <% end %>
+                <%end%>
+            <% if current_user.voted_down_on? @topic  %>
+                <%= link_to(dislike_link_path(@topic), class: "btn btn-danger") do %>
+                <i class="fa fa-thumbs-o-up fa-2x fa-rotate-180" ></i> <%=@topic.get_downvotes.size%>
+                <% end %>
+                <%else%>
+                <%= link_to(dislike_link_path(@topic), class: "btn btn-default") do %>
+                <i class="fa fa-thumbs-o-up fa-2x fa-rotate-180" ></i> <%=@topic.get_downvotes.size%>
+                <% end %>
+                <%end%>
+        <%else%>
+         <%= link_to(root_path, class: "btn btn-info disabled") do %>
+                <%=@topic.get_upvotes.size%> <i class="fa fa-thumbs-o-up fa-2x " ></i> 
+                <% end %>
+                <%= link_to(root_path, class: "btn btn-danger disabled") do %>
+                <i class="fa fa-thumbs-o-up fa-2x fa-rotate-180" ></i> <%=@topic.get_downvotes.size%>
+                <%end%>
+        <%end%>
+       
+       </div>
+</br></br></br></br></br></br></br>
+          <div class="col-sm-6 col-md-10">
+               <center> <%if @topic.picture?%>
+  <%= link_to image_tag(@topic.picture,size: "400x320"),@topic.picture  %>
+              <%else%>
+                <%= image_tag('http://img2.wikia.nocookie.net/__cb20130511180903/legendmarielu/images/b/b4/No_image_available.jpg',size: "400x320")%>
+              <%end%></center>
+              </div>
+                         <div class="colxsm-0 col-sm-1 col-md-1"></div>
+          </div>
+          </br></br>
+          <div class="row">
+            <div class="col-md-1 col-sm-1">
+            </div>
+              <div class="col-md-10 col-sm-10" >
+                  <%= raw @topic.description %>
+
+                </div>
+           <div class="col-md1-1 col-sm-1">
+            </div>
+            
+        </div>
+            </div>
+
+        
+</div>
+</br></br>
+              <div class="col-sx-0 col-sm-1 col-md-1"></div>
+              <div class="col-sx-0 col-sm-2 col-md-4">
+          <% if can? :update, @topic %>
+            <%= link_to 'Edit', edit_topic_path(@topic),  :class => 'btn btn-warning'  %>
+            <% end %>
+          </div>
+          <div class="col-sx-0 col-sm-2 col-md-3">
+            <%= link_to 'Show Original', @topic.link, :class => 'btn  btn-info'  %>
+
+              </div>
+                            <div class="col-sx-0 col-sm-1 col-md-1"></div>
+          <div class="col-sx-0 col-sm-2 col-md-3">
+            <% if can? :delete, @topic %>
+            <%= link_to 'Delete', @topic, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn  btn-danger'  %>
+            <% end %>
+            
+</div>
+</br></br></br></br>
+<div class="well">
+<h3>Comments:</h3>
+
+ <% @comments.each do |comment| %>
+      <br/>
+          <strong><u><%if comment.user.username == nil %>
+            Anonymous
+            <%elsif comment.user.username.length <3%>
+                        Anonymous
+
+          <%else%>
+        <%=comment.user.username%>
+          <%end%>
+    </u></strong> : <%= comment.comment_body %>
+    </br>
+    <% if can? :destroy, comment %>
+        <%= link_to 'Delete', [comment.topic, comment], method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn  btn-xs btn-danger'  %>
+    <% end %>
+    <br/>
+ <%end%>
+  <% if user_signed_in? %>
+  </br></br></br>
+  
+  <h2>Add a comment:</h2>
+  
+  <%= simple_form_for([@topic, @topic.comments.build]) do |f| %>
+    <%= f.input :comment_body %>
+    <%t=true%>
+    <%= f.button :submit %>
+    <%end%>
+    <% else %>
+    <h5>Login to comment</h5>
+    <%end%>
+ 
+</div>

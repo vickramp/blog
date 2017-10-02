@@ -1,0 +1,51 @@
+<div class="well">
+<%@user=User.new%>
+<%= simple_form_for @user, :url => { :controller => "admin", :action => "create" }, :html => {:method => :post} do |f|%>
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this topic from being saved:</h2>
+
+      <ul>
+      <% @user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+
+  
+    
+ 
+<% end %>
+
+<%= f.input :email , :placeholder => "Type the person\'s email id "%>
+     <%= f.button :submit,"Make As Admin"%>
+
+
+<%end%>
+</div>
+<div class="well">
+<%@user=User.new%>
+<%= simple_form_for @user, :url => { :controller => "admin", :action => "demote" }, :html => {:method => :post} do |f|%>
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this topic from being saved:</h2>
+
+      <ul>
+      <% @user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+
+  
+    
+ 
+<% end %>
+
+<%= f.input :email , :placeholder => "Type the person\'s email id "%>
+     <%= f.button :submit,"Revoke Admin Access"%>
+
+
+<%end%>
+</div>
+

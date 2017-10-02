@@ -1,0 +1,30 @@
+<div class="well">
+<h1>Editing topic</h1>
+<%= link_to 'Delete', @topic, method: :delete, :class => 'btn  btn-danger'  %>
+
+<%= render 'editform' %>
+</div>
+<br><br>
+<h3>Content To Be Displayed</h3>
+<div class='well'>
+    <div class="row">
+  <div class="col-xs-1 col-md-4"></div>
+  <div class="col-xs-1 col-md-4">
+
+ <%if @topic.picture?%>
+  <%= link_to image_tag(@topic.picture,size: "400x320"),@topic.picture  %>
+              <%else%>
+                <%= image_tag('http://img2.wikia.nocookie.net/__cb20130511180903/legendmarielu/images/b/b4/No_image_available.jpg',size: "400x320")%>
+              <%end%>    </div>
+      <div class="col-xs-1 col-md-4"></div>
+
+    </div>
+     <div class="row">
+  <div class="col-xs-0 col-md-1"></div>
+  <div class="col-xs-0 col-md-10">
+    <%= @topic.description.html_safe%>
+    </div>
+       <div class="col-xs-0 col-md-1"></div>
+
+    </div>
+</div>

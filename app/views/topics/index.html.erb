@@ -1,0 +1,105 @@
+<% @topics.each do |topic| %>
+<div class="panel panel-default">
+      
+      
+      
+  <div class="panel-heading">
+      
+      
+      
+    <div class="row">
+      
+      
+      
+      <div class="col xs-0 col-sm-0 col-md-3">
+           <% if user_signed_in?%>
+            <% if current_user.voted_up_on? topic  %>
+                <%= link_to(like_link_path(topic), class: "btn btn-info") do %>
+                <%=topic.get_upvotes.size%> <i class="fa fa-thumbs-o-up fa-1x " ></i>  
+                <% end %>
+                <%else%>
+                <%= link_to(like_link_path(topic), class: "btn btn-default") do %>
+                <%=topic.get_upvotes.size%> <i class="fa fa-thumbs-o-up fa-1x " ></i>  
+                <% end %>
+                <%end%>
+            <% if current_user.voted_down_on? topic %>
+                <%= link_to(dislike_link_path(topic), class: "btn btn-danger") do %>
+                <i class="fa fa-thumbs-o-up fa-1x fa-rotate-180" ></i> <%=topic.get_downvotes.size%>
+                <% end %>
+                <%else%>
+                <%= link_to(dislike_link_path(topic), class: "btn btn-default") do %>
+                <i class="fa fa-thumbs-o-up fa-1x fa-rotate-180" ></i> <%=topic.get_downvotes.size%>
+                <% end %>
+            <%end%>
+             
+        <%else%>
+          <%= link_to(root_path, class: "btn btn-info disabled") do %>
+                <%=topic.get_upvotes.size%> <i class="fa fa-thumbs-o-up fa-1" ></i> 
+                <% end %>
+                <%= link_to(root_path, class: "btn btn-danger disabled") do %>
+                <i class="fa fa-thumbs-o-up fa-1x fa-rotate-180" ></i> <%=topic.get_downvotes.size%>
+                <% end %>
+        <%end%>
+      </div>
+      
+      <div class="col-xs-0 col-sm-5" onclick="location.href='topics/<%=topic.id%>';">
+<center><h4><strong><%= topic.title %></strong></h4></center>
+      </div>
+      <div class="col-xs-0 col-sm-2">
+        <% if can? :update, topic %>
+        <%= link_to 'Edit', edit_topic_path(topic), :class => 'btn  btn-warning'  %>
+        <% end %>
+      </div>
+      <div class="col-xs-0 col-sm-2">
+            <% if can? :delete, topic %>
+              <%= link_to 'Delete', topic, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn  btn-danger'  %>
+            <% end %>
+      </div>
+    </div>
+    
+    
+  </div>
+  
+  
+  <div class="panel-body" onclick="location.href='topics/<%=topic.id%>';">
+  <div class="row">
+      <div class="col-xs-0 col-sm-4 col-md-4"></div>
+      <div class="col-xs-0 col-sm-4 col-md-4">
+
+        <div class="img-thumbnail">
+          <center>
+          <%if topic.picture?%>
+            <%= image_tag(topic.picture, size: "200x120")  %>
+          <%else%>
+            <%= image_tag('http://img2.wikia.nocookie.net/__cb20130511180903/legendmarielu/images/b/b4/No_image_available.jpg',size: "200x120")%>
+          <%end%></center>
+          
+      </div></div>
+      <div class="col-xs-0 col-sm-4 col-md-3"></div>
+
+    </div>
+    
+    <div class="row">
+      <div class="col-md-1 col-xs-1"></div>
+        <div class="col-md-10 col-sm-10" >
+
+          <% if topic.summary==nil %>
+       <center>   No Description Available</center>
+       <% elsif topic.summary.length <3%>
+              <center>   No Description Available</center>
+
+          <%else%>
+         <center> <%=topic.summary%>....</center>
+         <%end%>
+        </div>
+        <div class="col-md-1 col-sm-1"></div>
+      </div>
+      
+      
+      
+    </div>
+
+
+
+</div>
+<% end %>
